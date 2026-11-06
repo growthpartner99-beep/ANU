@@ -1,0 +1,25 @@
+# dependencies
+node_modules/
+
+# build output
+dist/
+build/
+out/
+release/
+*.asar
+
+# environment / logs
+.env
+*.log
+npm-debug.log*
+
+# windows
+Thumbs.db
+desktop.ini
+
+# macos (in case of cross-platform work later)
+.DS_Store
+
+# editors
+.vscode/
+.idea/

@@ -1,0 +1,23 @@
+{
+  "name": "anu",
+  "version": "1.0.0",
+  "description": "",
+  "main": "src/main/main.js",
+  "scripts": {
+    "start": "electron .",
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "devDependencies": {
+    "electron": "^22.3.27"
+  },
+  "dependencies": {
+    "@rive-app/canvas": "^2.49.4"
+  },
+  "allowScripts": {
+    "electron@22.3.27": true
+  }
+}
