@@ -4,7 +4,7 @@
   "description": "",
   "main": "src/main/main.js",
   "scripts": {
-    "start": "electron .",
+    "start": "powershell -Command \"$env:ELECTRON_RUN_AS_NODE=$null; electron .\"",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
   "keywords": [],

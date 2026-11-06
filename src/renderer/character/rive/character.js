@@ -18,7 +18,7 @@ class RiveCharacter {
 
   async load() {
     return new Promise((resolve, reject) => {
-      const loader = new window.Rive.RuntimeLoader({
+      const loader = new window.rive.RuntimeLoader({
         src: this.rivFile,
         autoplay: true,
         onLoad: (riveFile) => {
@@ -31,12 +31,12 @@ class RiveCharacter {
             return;
           }
 
-          this.rive = new window.Rive({
+          this.rive = new window.rive.Rive({
             canvas: this.canvas,
             artboard: this.artboard,
             autoplay: true,
-            fit: window.Rive.Fit.CONTAIN,
-            alignment: window.Rive.Alignment.CENTER,
+            fit: window.rive.Fit.CONTAIN,
+            alignment: window.rive.Alignment.CENTER,
           });
 
           this.stateMachine = this.rive.stateMachineByName(this.stateMachineName);

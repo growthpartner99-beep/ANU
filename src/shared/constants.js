@@ -1,5 +1,5 @@
 const ANU = {
-  WINDOW: { WIDTH: 300, HEIGHT: 320 },
+  WINDOW: { WIDTH: 600, HEIGHT: 650 },
 };
 
 if (typeof window !== 'undefined') {
