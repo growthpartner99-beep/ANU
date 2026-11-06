@@ -1,0 +1,600 @@
+<Rive version="1" kind="fragment">
+    <Artboard defaultStateMachineId="0:2000" styleId="0:3" width="300" height="320" name="Artboard" id="0:2">
+        <LayoutComponentStyle name="Artboard Style" id="0:3"/>
+
+        <!-- Background: transparent -->
+        <Fill name="Background" id="0:4">
+            <SolidColor colorValue="00000000" name="Color"/>
+        </Fill>
+
+        <!-- ============================================================================
+             VIEW MODEL
+             ============================================================================ -->
+        <ViewModel defaultInstanceId="0:11" name="ANU ViewModel" id="0:10">
+            <ViewModelPropertyNumber name="gazeX" id="0:12"/>
+            <ViewModelPropertyNumber name="gazeY" id="0:13"/>
+            <ViewModelPropertyNumber name="emotion" id="0:14"/>
+            <ViewModelPropertyNumber name="mouth" id="0:15"/>
+            <ViewModelPropertyNumber name="breath" id="0:16"/>
+            <ViewModelInstance exports="true" name="Default" id="0:11">
+                <ViewModelInstanceNumber propertyValue="0" viewModelPropertyId="0:12"/>
+                <ViewModelInstanceNumber propertyValue="0" viewModelPropertyId="0:13"/>
+                <ViewModelInstanceNumber propertyValue="0" viewModelPropertyId="0:14"/>
+                <ViewModelInstanceNumber propertyValue="0" viewModelPropertyId="0:15"/>
+                <ViewModelInstanceNumber propertyValue="1" viewModelPropertyId="0:16"/>
+            </ViewModelInstance>
+        </ViewModel>
+
+        <!-- ============================================================================
+             CHARACTER ARTWORK (back to front; first declared = front-most)
+             ============================================================================ -->
+
+        <!-- Tail -->
+        <Node x="240" y="200" name="Tail Group" id="0:100">
+            <Shape x="40" y="30" name="Tail Base" id="0:101">
+                <Ellipse width="70" height="110" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Tail Fill" id="0:102">
+                    <LinearGradient startX="-35" startY="0" endX="35" endY="0" name="Gradient" id="0:103">
+                        <GradientStop colorValue="FF4A5568" position="0"/>
+                        <GradientStop colorValue="FF2D3748" position="0.6"/>
+                        <GradientStop colorValue="FF1A202C" position="1"/>
+                    </LinearGradient>
+                </Fill>
+                <Stroke thickness="3" name="Tail Stroke" id="0:104">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                    <Feather strength="4" name="Feather"/>
+                </Stroke>
+            </Shape>
+            <Shape x="30" y="50" name="Tail Tip" id="0:105">
+                <Ellipse width="50" height="80" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Tip Fill" id="0:106">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+                <Stroke thickness="2" name="Tip Stroke" id="0:107">
+                    <SolidColor colorValue="FF0099CC" name="Color"/>
+                </Stroke>
+            </Shape>
+        </Node>
+
+        <!-- Body / Hoodie -->
+        <Node x="150" y="240" name="Body Group" id="0:200">
+            <Shape x="0" y="0" name="Hoodie Body" id="0:201">
+                <Rectangle width="160" height="140" cornerRadiusTL="30" cornerRadiusTR="30" cornerRadiusBL="10" cornerRadiusBR="10" name="Path"/>
+                <Fill name="Hoodie Fill" id="0:202">
+                    <SolidColor colorValue="FF111827" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="-50" name="Hoodie Trim Top" id="0:203">
+                <Rectangle width="160" height="12" name="Path"/>
+                <Fill name="Trim Fill" id="0:204">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="60" name="Hoodie Trim Bottom" id="0:205">
+                <Rectangle width="160" height="10" name="Path"/>
+                <Fill name="Bottom Trim Fill" id="0:206">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="20" name="Hoodie A Emblem" id="0:207">
+                <Rectangle width="24" height="30" cornerRadiusTL="3" cornerRadiusTR="3" cornerRadiusBL="3" cornerRadiusBR="3" name="Path"/>
+                <Fill name="Emblem Fill" id="0:208">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+                <Stroke thickness="2" name="Emblem Stroke" id="0:209">
+                    <SolidColor colorValue="FF0099CC" name="Color"/>
+                </Stroke>
+            </Shape>
+        </Node>
+
+        <!-- Head -->
+        <Node x="150" y="150" name="Head Group" id="0:300">
+            <Shape x="0" y="0" name="Head Base" id="0:301">
+                <Ellipse width="150" height="150" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Head Fill" id="0:302">
+                    <LinearGradient startX="-75" startY="-75" endX="75" endY="75" name="Gradient" id="0:303">
+                        <GradientStop colorValue="FF6B7280" position="0"/>
+                        <GradientStop colorValue="FF4B5563" position="0.7"/>
+                        <GradientStop colorValue="FF374151" position="1"/>
+                    </LinearGradient>
+                </Fill>
+                <Stroke thickness="2" name="Head Stroke" id="0:304">
+                    <SolidColor colorValue="FF374151" name="Color"/>
+                </Stroke>
+            </Shape>
+            <Shape x="0" y="10" name="Face Mask" id="0:305">
+                <Ellipse width="100" height="90" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Face Fill" id="0:306">
+                    <LinearGradient startX="-50" startY="-45" endX="50" endY="45" name="Gradient" id="0:307">
+                        <GradientStop colorValue="FFE5E7EB" position="0"/>
+                        <GradientStop colorValue="FFD1D5DB" position="1"/>
+                    </LinearGradient>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Left Ear (back) -->
+        <Node x="85" y="90" rotation="-0.3" name="Left Ear Back" id="0:400">
+            <Shape x="0" y="0" name="Left Ear Outer" id="0:401">
+                <Polygon width="34" height="70" points="3" name="Path"/>
+                <Fill name="Left Ear Fill" id="0:402">
+                    <LinearGradient startX="-17" startY="-35" endX="17" endY="35" name="Gradient" id="0:403">
+                        <GradientStop colorValue="FF4A5568" position="0"/>
+                        <GradientStop colorValue="FF2D3748" position="1"/>
+                    </LinearGradient>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="0" name="Left Ear Inner" id="0:404">
+                <Polygon width="16" height="44" points="3" name="Path"/>
+                <Fill name="Left Ear Inner Fill" id="0:405">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Right Ear (back) -->
+        <Node x="215" y="90" rotation="0.3" name="Right Ear Back" id="0:500">
+            <Shape x="0" y="0" name="Right Ear Outer" id="0:501">
+                <Polygon width="34" height="70" points="3" name="Path"/>
+                <Fill name="Right Ear Fill" id="0:502">
+                    <LinearGradient startX="-17" startY="-35" endX="17" endY="35" name="Gradient" id="0:503">
+                        <GradientStop colorValue="FF4A5568" position="0"/>
+                        <GradientStop colorValue="FF2D3748" position="1"/>
+                    </LinearGradient>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="0" name="Right Ear Inner" id="0:504">
+                <Polygon width="16" height="44" points="3" name="Path"/>
+                <Fill name="Right Ear Inner Fill" id="0:505">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Left Eye -->
+        <Node x="-35" y="-10" name="Left Eye Group" id="0:600">
+            <Shape x="0" y="0" name="Left Sclera" id="0:601">
+                <Ellipse width="44" height="36" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Left Sclera Fill" id="0:602">
+                    <SolidColor colorValue="FFFFFFFF" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="0" name="Left Iris" id="0:603">
+                <Ellipse width="20" height="20" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Left Iris Fill" id="0:604">
+                    <RadialGradient startX="0" startY="0" endX="0" endY="10" name="Gradient" id="0:605">
+                        <GradientStop colorValue="FF3B82F6" position="0"/>
+                        <GradientStop colorValue="FF1E40AF" position="1"/>
+                    </RadialGradient>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="0" name="Left Pupil" id="0:606">
+                <Ellipse width="10" height="10" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Left Pupil Fill" id="0:607">
+                    <SolidColor colorValue="FF1E293B" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="-5" y="-5" name="Left Highlight" id="0:608">
+                <Ellipse width="6" height="6" name="Path"/>
+                <Fill name="Left Highlight Fill" id="0:609">
+                    <SolidColor colorValue="FFFFFFFF" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="-18" name="Left Eyelid Top" id="0:610">
+                <Ellipse width="50" height="24" name="Path"/>
+                <Fill name="Left Eyelid Fill" id="0:611">
+                    <SolidColor colorValue="FF6B7280" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Right Eye -->
+        <Node x="35" y="-10" name="Right Eye Group" id="0:700">
+            <Shape x="0" y="0" name="Right Sclera" id="0:701">
+                <Ellipse width="44" height="36" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Right Sclera Fill" id="0:702">
+                    <SolidColor colorValue="FFFFFFFF" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="0" name="Right Iris" id="0:703">
+                <Ellipse width="20" height="20" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Right Iris Fill" id="0:704">
+                    <RadialGradient startX="0" startY="0" endX="0" endY="10" name="Gradient" id="0:705">
+                        <GradientStop colorValue="FF3B82F6" position="0"/>
+                        <GradientStop colorValue="FF1E40AF" position="1"/>
+                    </RadialGradient>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="0" name="Right Pupil" id="0:706">
+                <Ellipse width="10" height="10" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Right Pupil Fill" id="0:707">
+                    <SolidColor colorValue="FF1E293B" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="-5" y="-5" name="Right Highlight" id="0:708">
+                <Ellipse width="6" height="6" name="Path"/>
+                <Fill name="Right Highlight Fill" id="0:709">
+                    <SolidColor colorValue="FFFFFFFF" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="0" y="-18" name="Right Eyelid Top" id="0:710">
+                <Ellipse width="50" height="24" name="Path"/>
+                <Fill name="Right Eyelid Fill" id="0:711">
+                    <SolidColor colorValue="FF6B7280" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Nose -->
+        <Shape x="0" y="25" name="Nose" id="0:800">
+            <Ellipse width="14" height="10" originX="0.5" originY="0.5" name="Path"/>
+            <Fill name="Nose Fill" id="0:801">
+                <SolidColor colorValue="FF374151" name="Color"/>
+            </Fill>
+        </Shape>
+
+        <!-- Mouth -->
+        <Node x="0" y="40" name="Mouth Group" id="0:900">
+            <Shape x="0" y="0" name="Mouth Shape" id="0:901">
+                <Ellipse width="22" height="14" name="Path"/>
+                <Fill name="Mouth Fill" id="0:902">
+                    <SolidColor colorValue="FF374151" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Headphones -->
+        <Node x="0" y="-60" name="Headphones Group" id="0:1000">
+            <Shape x="0" y="0" name="Headband" id="0:1001">
+                <Rectangle width="130" height="10" cornerRadiusTL="5" cornerRadiusTR="5" cornerRadiusBL="5" cornerRadiusBR="5" name="Path"/>
+                <Fill name="Headband Fill" id="0:1002">
+                    <SolidColor colorValue="FF111827" name="Color"/>
+                </Fill>
+                <Stroke thickness="2" name="Headband Stroke" id="0:1003">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Stroke>
+            </Shape>
+            <Shape x="-65" y="15" name="Left Earcup" id="0:1004">
+                <Ellipse width="42" height="42" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Left Earcup Fill" id="0:1005">
+                    <RadialGradient startX="0" startY="0" endX="0" endY="21" name="Gradient" id="0:1006">
+                        <GradientStop colorValue="FF1F2937" position="0"/>
+                        <GradientStop colorValue="FF111827" position="1"/>
+                    </RadialGradient>
+                </Fill>
+                <Stroke thickness="3" name="Left Earcup Stroke" id="0:1007">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Stroke>
+            </Shape>
+            <Shape x="-65" y="15" name="Left A Emblem" id="0:1008">
+                <Rectangle width="16" height="20" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2" name="Path"/>
+                <Fill name="Left Emblem Fill" id="0:1009">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+            </Shape>
+            <Shape x="65" y="15" name="Right Earcup" id="0:1010">
+                <Ellipse width="42" height="42" originX="0.5" originY="0.5" name="Path"/>
+                <Fill name="Right Earcup Fill" id="0:1011">
+                    <RadialGradient startX="0" startY="0" endX="0" endY="21" name="Gradient" id="0:1012">
+                        <GradientStop colorValue="FF1F2937" position="0"/>
+                        <GradientStop colorValue="FF111827" position="1"/>
+                    </RadialGradient>
+                </Fill>
+                <Stroke thickness="3" name="Right Earcup Stroke" id="0:1013">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Stroke>
+            </Shape>
+            <Shape x="65" y="15" name="Right A Emblem" id="0:1014">
+                <Rectangle width="16" height="20" cornerRadiusTL="2" cornerRadiusTR="2" cornerRadiusBL="2" cornerRadiusBR="2" name="Path"/>
+                <Fill name="Right Emblem Fill" id="0:1015">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Left Ear front detail -->
+        <Node x="85" y="90" rotation="-0.3" name="Left Ear Front" id="0:1100">
+            <Shape x="0" y="-20" name="Left Ear Tip" id="0:1101">
+                <Ellipse width="8" height="12" name="Path"/>
+                <Fill name="Left Tip Fill" id="0:1102">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- Right Ear front detail -->
+        <Node x="215" y="90" rotation="0.3" name="Right Ear Front" id="0:1200">
+            <Shape x="0" y="-20" name="Right Ear Tip" id="0:1201">
+                <Ellipse width="8" height="12" name="Path"/>
+                <Fill name="Right Tip Fill" id="0:1202">
+                    <SolidColor colorValue="FF00D4FF" name="Color"/>
+                </Fill>
+            </Shape>
+        </Node>
+
+        <!-- ============================================================================
+             STATE MACHINE INPUTS (deprecated, for JS controller compatibility)
+             ============================================================================ -->
+        <StateMachine name="State Machine 1" id="0:2000">
+            <StateMachineNumber name="gazeX" id="0:2001"/>
+            <StateMachineNumber name="gazeY" id="0:2002"/>
+            <StateMachineNumber name="emotion" id="0:2003"/>
+            <StateMachineNumber name="mouth" id="0:2004"/>
+            <StateMachineNumber name="breath" id="0:2005"/>
+            <StateMachineNumber name="energy" id="0:2006"/>
+            <StateMachineBool name="isListening" id="0:2007"/>
+            <StateMachineBool name="isThinking" id="0:2008"/>
+            <StateMachineBool name="isSpeaking" id="0:2009"/>
+            <StateMachineTrigger name="blink" id="0:2010"/>
+            <StateMachineTrigger name="double_blink" id="0:2011"/>
+            <StateMachineTrigger name="state_idle" id="0:2012"/>
+            <StateMachineTrigger name="state_listening" id="0:2013"/>
+            <StateMachineTrigger name="state_thinking" id="0:2014"/>
+            <StateMachineTrigger name="state_speaking" id="0:2015"/>
+            <StateMachineTrigger name="state_happy" id="0:2016"/>
+            <StateMachineTrigger name="state_excited" id="0:2017"/>
+            <StateMachineTrigger name="state_surprised" id="0:2018"/>
+            <StateMachineTrigger name="state_sad" id="0:2019"/>
+            <StateMachineTrigger name="state_confused" id="0:2020"/>
+            <StateMachineTrigger name="state_sleepy" id="0:2021"/>
+            <StateMachineTrigger name="state_concerned" id="0:2022"/>
+            <StateMachineTrigger name="state_error" id="0:2023"/>
+
+            <!-- Idle Layer: continuous breathing -->
+            <StateMachineLayer name="Idle" id="0:2100">
+                <AnyState x="100" y="-100"/>
+                <ExitState x="400" y="-100"/>
+                <EntryState id="0:2101">
+                    <StateTransition stateToId="0:2102"/>
+                </EntryState>
+                <AnimationState animationId="0:3000" id="0:2102" reset="true"/>
+            </StateMachineLayer>
+
+            <!-- Expression Layer -->
+            <StateMachineLayer name="Expression" id="0:2110">
+                <AnyState x="100" y="-100"/>
+                <ExitState x="400" y="-100"/>
+                <EntryState id="0:2111">
+                    <StateTransition stateToId="0:2112"/>
+                </EntryState>
+                <AnimationState animationId="0:3001" id="0:2112">
+                    <StateTransition stateToId="0:2113" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="1"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2114" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="2"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2115" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="3"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2116" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="4"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2117" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="5"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2118" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="6"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2119" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="7"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2120" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="8"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2121" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="9"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2122" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="10"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2123" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="11"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3002" id="0:2113">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3003" id="0:2114">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3004" id="0:2115">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3005" id="0:2116">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3006" id="0:2117">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3007" id="0:2118">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3008" id="0:2119">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3009" id="0:2120">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3010" id="0:2121">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3011" id="0:2122">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3012" id="0:2123">
+                    <StateTransition stateToId="0:2112" duration="250">
+                        <TransitionNumberCondition inputId="0:2003" opValue="equal" value="0"/>
+                    </StateTransition>
+                </AnimationState>
+            </StateMachineLayer>
+
+            <!-- Gaze X Layer: BlendState1DInput -->
+            <StateMachineLayer name="Gaze X" id="0:2130">
+                <AnyState x="100" y="-100"/>
+                <ExitState x="400" y="-100"/>
+                <EntryState id="0:2131">
+                    <StateTransition stateToId="0:2132"/>
+                </EntryState>
+                <BlendState1DInput id="0:2132">
+                    <BindablePropertyNumber id="0:2133">
+                        <DataBindContext sourcePathIds="0:10-0:12" propertyKey="636"/>
+                    </BindablePropertyNumber>
+                    <BlendAnimation1D animationId="0:3100" value="-100"/>
+                    <BlendAnimation1D animationId="0:3101" value="0"/>
+                    <BlendAnimation1D animationId="0:3102" value="100"/>
+                    <BlendStateTransition stateToId="0:2134"/>
+                </BlendState1DInput>
+                <AnimationState animationId="0:3103" id="0:2134"/>
+            </StateMachineLayer>
+
+            <!-- Gaze Y Layer: BlendState1DInput -->
+            <StateMachineLayer name="Gaze Y" id="0:2140">
+                <AnyState x="100" y="-100"/>
+                <ExitState x="400" y="-100"/>
+                <EntryState id="0:2141">
+                    <StateTransition stateToId="0:2142"/>
+                </EntryState>
+                <BlendState1DInput id="0:2142">
+                    <BindablePropertyNumber id="0:2143">
+                        <DataBindContext sourcePathIds="0:10-0:13" propertyKey="636"/>
+                    </BindablePropertyNumber>
+                    <BlendAnimation1D animationId="0:3110" value="-100"/>
+                    <BlendAnimation1D animationId="0:3111" value="0"/>
+                    <BlendAnimation1D animationId="0:3112" value="100"/>
+                    <BlendStateTransition stateToId="0:2144"/>
+                </BlendState1DInput>
+                <AnimationState animationId="0:3113" id="0:2144"/>
+            </StateMachineLayer>
+
+            <!-- Mouth Layer: BlendState1DInput -->
+            <StateMachineLayer name="Mouth" id="0:2150">
+                <AnyState x="100" y="-100"/>
+                <ExitState x="400" y="-100"/>
+                <EntryState id="0:2151">
+                    <StateTransition stateToId="0:2152"/>
+                </EntryState>
+                <BlendState1DInput id="0:2152">
+                    <BindablePropertyNumber id="0:2153">
+                        <DataBindContext sourcePathIds="0:10-0:15" propertyKey="636"/>
+                    </BindablePropertyNumber>
+                    <BlendAnimation1D animationId="0:3200" value="0"/>
+                    <BlendAnimation1D animationId="0:3201" value="1"/>
+                    <BlendAnimation1D animationId="0:3202" value="2"/>
+                    <BlendAnimation1D animationId="0:3203" value="3"/>
+                    <BlendAnimation1D animationId="0:3204" value="4"/>
+                    <BlendAnimation1D animationId="0:3205" value="5"/>
+                    <BlendStateTransition stateToId="0:2154"/>
+                </BlendState1DInput>
+                <AnimationState animationId="0:3206" id="0:2154"/>
+            </StateMachineLayer>
+
+            <!-- Blink Layer -->
+            <StateMachineLayer name="Blink" id="0:2160">
+                <AnyState x="100" y="-100"/>
+                <ExitState x="400" y="-100"/>
+                <EntryState id="0:2161">
+                    <StateTransition stateToId="0:2162"/>
+                </EntryState>
+                <AnimationState animationId="0:3300" id="0:2162">
+                    <StateTransition stateToId="0:2163" duration="80">
+                        <TransitionTriggerCondition inputId="0:2010"/>
+                    </StateTransition>
+                    <StateTransition stateToId="0:2164" duration="80">
+                        <TransitionTriggerCondition inputId="0:2011"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3301" id="0:2163">
+                    <StateTransition stateToId="0:2162" duration="100">
+                        <TransitionNumberCondition inputId="0:2005" opValue="greaterThan" value="0.5"/>
+                    </StateTransition>
+                </AnimationState>
+                <AnimationState animationId="0:3301" id="0:2164">
+                    <StateTransition stateToId="0:2162" duration="100">
+                        <TransitionNumberCondition inputId="0:2005" opValue="greaterThan" value="0.5"/>
+                    </StateTransition>
+                </AnimationState>
+            </StateMachineLayer>
+        </StateMachine>
+
+        <!-- ============================================================================
+             ANIMATIONS
+             ============================================================================ -->
+
+        <!-- Idle / Breathing: scale the body group up and down -->
+        <LinearAnimation loopValue="loop" duration="120" name="Idle" id="0:3000">
+            <KeyedObject objectId="0:200">
+                <KeyedProperty propertyKey="17">
+                    <KeyFrameDouble value="1" frame="0" interpolationType="cubic">
+                        <CubicEaseInterpolator x1="0.42" y1="0" x2="0.58" y2="1"/>
+                    </KeyFrameDouble>
+                    <KeyFrameDouble value="1.03" frame="60" interpolationType="cubic">
+                        <CubicEaseInterpolator x1="0.42" y1="0" x2="0.58" y2="1"/>
+                    </KeyFrameDouble>
+                    <KeyFrameDouble value="1" frame="120" interpolationType="cubic">
+                        <CubicEaseInterpolator x1="0.42" y1="0" x2="0.58" y2="1"/>
+                    </KeyFrameDouble>
+                </KeyedProperty>
+            </KeyedObject>
+        </LinearAnimation>
+
+        <!-- Expression animations -->
+        <LinearAnimation duration="1" name="Neutral" id="0:3001"/>
+        <LinearAnimation duration="1" name="Happy" id="0:3002"/>
+        <LinearAnimation duration="1" name="Excited" id="0:3003"/>
+        <LinearAnimation duration="1" name="Sad" id="0:3004"/>
+        <LinearAnimation duration="1" name="Confused" id="0:3005"/>
+        <LinearAnimation duration="1" name="Surprised" id="0:3006"/>
+        <LinearAnimation duration="1" name="Thinking" id="0:3007"/>
+        <LinearAnimation duration="1" name="Sleepy" id="0:3008"/>
+        <LinearAnimation duration="1" name="Concerned" id="0:3009"/>
+        <LinearAnimation duration="1" name="Error" id="0:3010"/>
+        <LinearAnimation duration="1" name="Listening" id="0:3011"/>
+        <LinearAnimation duration="1" name="Speaking" id="0:3012"/>
+
+        <!-- Gaze X animations -->
+        <LinearAnimation duration="1" name="Gaze Left" id="0:3100"/>
+        <LinearAnimation duration="1" name="Gaze Center X" id="0:3101"/>
+        <LinearAnimation duration="1" name="Gaze Right" id="0:3102"/>
+        <LinearAnimation duration="1" name="Gaze Hold X" id="0:3103"/>
+
+        <!-- Gaze Y animations -->
+        <LinearAnimation duration="1" name="Gaze Up" id="0:3110"/>
+        <LinearAnimation duration="1" name="Gaze Center Y" id="0:3111"/>
+        <LinearAnimation duration="1" name="Gaze Down" id="0:3112"/>
+        <LinearAnimation duration="1" name="Gaze Hold Y" id="0:3113"/>
+
+        <!-- Mouth animations -->
+        <LinearAnimation duration="1" name="Mouth Closed" id="0:3200"/>
+        <LinearAnimation duration="1" name="Mouth Small Open" id="0:3201"/>
+        <LinearAnimation duration="1" name="Mouth Open" id="0:3202"/>
+        <LinearAnimation duration="1" name="Mouth Smile" id="0:3203"/>
+        <LinearAnimation duration="1" name="Mouth O" id="0:3204"/>
+        <LinearAnimation duration="1" name="Mouth Wide" id="0:3205"/>
+        <LinearAnimation duration="1" name="Mouth Hold" id="0:3206"/>
+
+        <!-- Blink animations -->
+        <LinearAnimation duration="1" name="Eyes Open" id="0:3300"/>
+        <LinearAnimation duration="1" name="Eyes Closed" id="0:3301"/>
+    </Artboard>
+</Rive>
