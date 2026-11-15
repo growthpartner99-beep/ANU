@@ -1,0 +1,26 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      http-equiv="Content-Security-Policy"
+      content="default-src 'none'; script-src 'self'; style-src 'self'; img-src 'self' data:;"
+    />
+    <title>ANU — Archive</title>
+    <link rel="stylesheet" href="archive.css" />
+  </head>
+  <body>
+    <header class="archive-head">
+      <div>
+        <h1>ANU Archive</h1>
+        <p class="hint">Every exchange, kept out of the way. The companion window never opens this by itself.</p>
+      </div>
+      <span id="archive-count" class="count"></span>
+    </header>
+    <main id="archive-log" class="log"></main>
+    <p id="archive-empty" class="empty">
+      No exchanges yet. Summon ANU with the hotkey, type something, then come back.
+    </p>
+    <script src="archive.js"></script>
+  </body>
+</html>

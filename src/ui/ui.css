@@ -1,0 +1,217 @@
+/* Stage layout: character bottom-right, bubble above it, pill below, card on top. */
+
+#character {
+  position: absolute;
+  right: 8px;
+  bottom: 58px;
+  width: 396px;
+  height: 420px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: flex-end;
+  cursor: pointer;
+}
+
+/* ---- rig (placeholder: two stacked crossfading images) ---- */
+.rig {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transform: translate(var(--gaze-x, 0), var(--gaze-y, 0)) rotate(var(--gaze-r, 0));
+  transition: transform 220ms ease-out;
+}
+
+.rig-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  object-position: bottom right;
+  opacity: 0;
+  transition: opacity var(--fade, 180ms) ease-in-out;
+  -webkit-user-drag: none;
+}
+
+.rig-layer.is-front {
+  opacity: 1;
+}
+
+/* ---- tail status light ----
+   Placeholder: the art is one flat image, so the status shows as a ring near the
+   tail instead of lighting the tail itself. No blur, no blend modes. */
+.status-light {
+  --light-a: var(--cyan-glow);
+  --light-b: var(--blue);
+  position: absolute;
+  left: 2%;
+  bottom: 6%;
+  width: 78px;
+  height: 78px;
+  border-radius: 50%;
+  pointer-events: none;
+  background: conic-gradient(
+    from 0deg,
+    transparent 0deg,
+    var(--light-a) 40deg,
+    var(--light-b) 120deg,
+    transparent 170deg,
+    transparent 360deg
+  );
+  -webkit-mask: radial-gradient(closest-side, transparent 58%, #000 64%, #000 78%, transparent 86%);
+  mask: radial-gradient(closest-side, transparent 58%, #000 64%, #000 78%, transparent 86%);
+  opacity: 0.2;
+  transition: opacity 240ms ease, filter 240ms ease;
+}
+
+.rig[data-tail="dim"] .status-light { opacity: 0.18; }
+.rig[data-tail="idle"] .status-light { opacity: 0.42; }
+.rig[data-tail="bright"] .status-light { opacity: 0.78; }
+.rig[data-tail="steady"] { --light-a: #7ef2ff; }
+.rig[data-tail="steady"] .status-light { opacity: 1; }
+.rig[data-tail="think"] .status-light {
+  opacity: 0.62;
+  animation: tail-spin 3.2s linear infinite;
+}
+.rig[data-tail="mic"] .status-light {
+  opacity: calc(0.3 + var(--mic, 0) * 0.7);
+  transform: scale(calc(1 + var(--mic, 0) * 0.28));
+  transition: opacity 80ms linear, transform 80ms linear;
+}
+.rig[data-tail="error"] {
+  --light-a: #ff9b6a;
+  --light-b: #ff4d6d;
+}
+.rig[data-tail="error"] .status-light { opacity: 0.92; }
+
+@keyframes tail-spin {
+  from { rotate: 0deg; }
+  to { rotate: 360deg; }
+}
+
+/* ---- headphone rings ----
+   Placeholder-only cue: two soft cyan rims over the headphone cups, brightened
+   while listening. No blur filter, no blend modes. */
+#character::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background:
+    radial-gradient(closest-side, transparent 40%, rgba(99, 230, 252, 0.5) 68%, transparent 86%) 4% 48% / 26% 32% no-repeat,
+    radial-gradient(closest-side, transparent 40%, rgba(99, 230, 252, 0.5) 68%, transparent 86%) 96% 48% / 26% 32% no-repeat;
+  opacity: 0;
+  transition: opacity 260ms ease;
+  pointer-events: none;
+}
+body[data-rings="bright"] #character::before { opacity: 0.4; }
+body[data-rings="mid"] #character::before { opacity: 0.24; }
+body[data-rings="red"] #character::before { opacity: 0.34; }
+body[data-listening="true"] #character::before { opacity: 0.62; }
+
+/* ---- card ---- */
+.card {
+  position: absolute;
+  left: 14px;
+  right: 14px;
+  top: 14px;
+  max-height: 232px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  padding: 12px 14px 14px;
+  border-radius: 16px;
+  border: 1.5px solid rgba(99, 230, 252, 0.72);
+  background: linear-gradient(180deg, var(--navy), var(--navy-deep));
+  box-shadow: 0 0 0 1px rgba(99, 230, 252, 0.12), 0 10px 28px rgba(3, 8, 20, 0.55);
+  color: var(--offwhite);
+  font-size: 12.5px;
+  line-height: 1.5;
+  overflow: auto;
+}
+
+.card[hidden] {
+  display: none;
+}
+
+.card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 11px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--aqua);
+}
+
+.card-head button {
+  all: unset;
+  cursor: pointer;
+  width: 22px;
+  height: 22px;
+  display: grid;
+  place-items: center;
+  border-radius: 8px;
+  color: var(--offwhite);
+  font-size: 16px;
+}
+
+.card-head button:hover,
+.card-head button:focus-visible {
+  background: rgba(99, 230, 252, 0.18);
+  outline: none;
+}
+
+.card-body p {
+  margin: 0 0 8px;
+}
+
+.card-body p:last-child {
+  margin-bottom: 0;
+}
+
+.card-body pre {
+  margin: 0 0 8px;
+  padding: 10px 12px;
+  border-radius: 10px;
+  background: #050a16;
+  border: 1px solid rgba(99, 230, 252, 0.22);
+  overflow-x: auto;
+  font-size: 11.5px;
+  line-height: 1.45;
+}
+
+.card-receipt {
+  font-size: 11px;
+  color: var(--aqua);
+}
+
+/* ---- deterministic render mode for screenshots (?shot=<expression>) ---- */
+body.shot {
+  width: 512px;
+  height: 512px;
+}
+
+body.shot #stage,
+body.shot #character {
+  position: absolute;
+  inset: 0;
+  width: 512px;
+  height: 512px;
+}
+
+body.shot #character {
+  right: auto;
+  bottom: auto;
+}
+
+body.shot .rig-layer {
+  object-position: center bottom;
+}
+
+body.shot #bubble,
+body.shot #card,
+body.shot #pill,
+body.shot .status-light,
+body.shot #character::before {
+  display: none;
+}

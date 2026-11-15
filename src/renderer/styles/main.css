@@ -1,6 +1,8 @@
+/* Shared renderer base: transparent window, nothing selectable. */
 * {
   box-sizing: border-box;
 }
+
 html,
 body {
   margin: 0;
@@ -8,21 +10,33 @@ body {
   background: transparent;
   overflow: hidden;
   user-select: none;
+  font-family: "Segoe UI", system-ui, sans-serif;
+  color: var(--offwhite);
 }
+
 body {
-  display: flex;
-  align-items: center;
-  justify-content: center;
+  /* Palette sampled from assets/ref/ANU_sheet.png (palette.json). */
+  --blue: #20a6fc;
+  --aqua: #5fdcfd;
+  --offwhite: #f6f3fd;
+  --lavender: #b7b6fc;
+  --violet: #817bfa;
+  /* reply bubble: dark navy fill, glowing cyan outline */
+  --navy: #0b1730;
+  --navy-deep: #060d1c;
+  --cyan-glow: #63e6fc;
 }
-#character {
+
+#stage {
   position: relative;
   width: 100%;
   height: 100%;
 }
-#rive-canvas {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  display: block;
+
+/* Only the character, bubble, card and pill accept the pointer. */
+#stage {
+  pointer-events: none;
+}
+[data-hit] {
+  pointer-events: auto;
 }
