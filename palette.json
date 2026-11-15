@@ -1,0 +1,15 @@
+{
+  "source": "assets/ref/ANU_sheet.png",
+  "sampledAt": "2026-11-15",
+  "reference": { "width": 1402, "height": 1122 },
+  "colors": {
+    "blue": "#20a6fc",
+    "aqua": "#5fdcfd",
+    "offwhite": "#f6f3fd",
+    "lavender": "#b7b6fc",
+    "violet": "#817bfa",
+    "bubbleFill": "#03255e",
+    "bubbleGlow": "#b0d5fb",
+    "ringCyan": "#19bdff"
+  }
+}
