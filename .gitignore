@@ -31,3 +31,4 @@ __pycache__/
 *.pyc
 # generated media
 docs/shots/*.tmp.png
+docs/shots/compare.png

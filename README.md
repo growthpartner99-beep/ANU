@@ -7,34 +7,38 @@ accomplish tasks.
 
 ANU is **not a website**. It is a local Electron desktop application.
 
-> **Stage: architecture + visual prototype.**
-> The project is being built incrementally — every capability is implemented
-> and tested before the next one starts. Right now only the floating window
-> and the character prototype exist.
+> **Stage: character-tethered UI, placeholder art.**
+> The window, the state machine and the whole summon → type → reply → archive loop
+> exist and are tested. The character is cropped from a design sheet and the replies
+> are canned — see `docs/NEXT.md` for what is real and what is placeholder.
 
 ## Implemented
 
-- Transparent, frameless Electron window (150×160) with no title bar
-- Always-on-top, anchored to the bottom-right of the screen (above the taskbar)
-- CSS cartoon character prototype (head, torso, eyes, mouth)
-- Idle bobbing animation
-- Automatic blinking
-- Pupils follow the mouse cursor (cursor position is pushed from the main
-  process, so it works across the whole screen)
-- Talking-mouth animation with a startup demo, plus `startTalking()` /
-  `stopTalking()` hooks callable from devtools
-- F12 toggles devtools (frameless window has no menu)
+- Transparent, frameless, click-through Electron window (520×640), always on top,
+  anchored bottom-right above the taskbar
+- Character-tethered UI: the character is the interface. A `Ctrl+Alt+Space` tap opens
+  a small input pill under it; a hold turns the same key into push-to-talk
+- Nine-state machine (`idle`, `summoned`, `typing`, `listening`, `thinking`,
+  `responding`, `acting`, `error`, `sleeping`) with an explicit transition allowlist;
+  every visual is derived from the state
+- Replies stream into a bubble above the character (2 s + words/3, max 20 s, click to
+  pin); anything over 60 words or with code/lists/tables becomes a dismissible card
+- Action receipts (`opened Spotify`) under the reply
+- Tray menu with an **Archive** window that reads/appends `archive.jsonl`; it never
+  opens by itself
+- Placeholder rig: six expression crops crossfaded per state, gaze as a CSS tilt,
+  blink as a fast crossfade to the sleepy expression
+- Mic level from a Web Audio analyser while push-to-talk is held (no transcription)
+- `npm test` — unit tests over the state machine and reply rules
 
 ## Planned (NOT implemented yet)
 
-- Typed text input
-- Speech input (listening)
-- Speech output (speaking back)
-- Screen perception / vision
-- Mouse and keyboard control
-- AI reasoning system that works toward goals
-- Background operation with a global keyboard shortcut
-- Tray icon, autostart, packaged installer
+- Hand-cut layered art (`assets/parts/`) so eyes, eyelids and mouth can animate
+- Speech recognition and speech output
+- Screen perception / vision and a pointing overlay
+- Mouse and keyboard control, behind a permission gate
+- A real model behind `askAnu` (see the seam in `src/services/askAnu.js`)
+- Autostart and a packaged installer
 
 None of the above exist yet — do not expect them from `npm start`.
 
@@ -55,33 +59,38 @@ Press **F12** in the ANU window for devtools. Close it via its taskbar entry.
 ANU/
 ├── src/
 │   ├── main/                 # Electron main process (Node)
-│   │   ├── main.js           # entry point: app lifecycle
-│   │   ├── window.js         # creates the floating window, pushes cursor
-│   │   └── preload.js        # safe bridge between main and renderer
-│   ├── renderer/             # code that runs in the window (browser side)
-│   │   ├── index.html        # page shell
-│   │   ├── styles/main.css   # all styles (kept out of JS)
-│   │   ├── character/        # character modules
-│   │   │   ├── character.js  # coordinator / startup behavior
-│   │   │   ├── eyes.js       # pupil tracking + blinking
-│   │   │   └── mouth.js      # talking animation hooks
-│   │   └── input/
-│   │       └── mouse.js      # receives cursor position from main
-│   └── shared/
-│       └── constants.js      # values used by both processes
-├── assets/                   # character/audio/icon files (reserved)
-├── config/                   # future runtime configuration (reserved)
-├── scripts/                  # future build/release scripts (reserved)
-├── tests/                    # future automated tests (reserved)
+│   │   ├── main.js           # lifecycle, hotkey, tray, archive store, IPC
+│   │   ├── window.js         # the companion window + the archive window
+│   │   ├── preload.js        # bridge for the companion window
+│   │   └── archive-preload.js# bridge for the archive window
+│   ├── renderer/             # page shell loaded in the window
+│   │   ├── index.html        # stage markup, loads the scripts below
+│   │   └── styles/main.css   # base styles (transparent body, palette vars)
+│   ├── ui/                   # what the user sees
+│   │   ├── app.js            # wires state, rig, pill, bubble, IPC
+│   │   ├── ui.css            # stage layout: character, bubble, card, status light
+│   │   ├── pill/             # input pill (tap-summoned)
+│   │   ├── bubble/           # streaming reply bubble, card mode, receipts
+│   │   └── archive/          # archive window page
+│   ├── state/                # anuState.js — states, transitions, LOOK map
+│   ├── rig/                  # rig.js — placeholder rig, layered rig interface
+│   ├── services/             # askAnu.js — the one seam a real model plugs into
+│   └── shared/               # constants + text rules used by both processes
+├── assets/
+│   ├── ref/                  # ANU_sheet.png — the design sheet, never modified
+│   ├── states/               # placeholder expression/hero/front crops
+│   ├── parts/                # hand-cut layers go here (empty)
+│   └── icons/                # tray icon
+├── config/anu.json           # runtime config (hotkey)
+├── docs/                     # ART_TODO.md, NEXT.md, architecture research
+├── scripts/                  # art slicer, screenshot harness (python/node)
+├── tests/                    # node --test unit tests
 ├── package.json
-├── .gitignore
-├── README.md
-├── AGENTS.md / CLAUDE.md       # coding-agent instructions
-├── PLAN.md                     # product & development plan (living document)
-└── CLOUD.md                    # cloud AI workflow notes
+└── README.md
 ```
 
-Each reserved folder contains a short README explaining its purpose.
+`src/renderer/character/` and `src/renderer/input/` hold the previous CSS/Rive
+prototype's modules. They are no longer loaded by `index.html`.
 
 ## Development principles
 
@@ -99,6 +108,7 @@ Each reserved folder contains a short README explaining its purpose.
 
 ## Verification
 
-After any refactor: run `npm start` and confirm the transparent character
-still appears bottom-right, stays always-on-top, blinks, and its pupils follow
-the cursor with no console errors.
+After any change: `npm test` for the unit tests, then `npm start` and check the
+things the tests cannot see — the character appears bottom-right and stays on top,
+`Ctrl+Alt+Space` opens the pill, Enter produces a reply, Esc dismisses it, and the
+tray menu still opens the archive. `docs/NEXT.md` lists what is placeholder.
