@@ -29,7 +29,8 @@ scale and one head anchor (top edge + horizontal centre of the ears/crown). They
 can be cross-faded without the head jumping. The sheet draws each expression bust
 slightly differently sized (face span 320–366 px at source), so the slicer
 measures the widest row through the face band and rescales each bust about the head
-anchor to the shared median. Measured spread after the pass is 1 px (0.3 %).
+anchor to a fixed 172 px face width (344 px in the exported 2× file). Measured
+spread after the pass is 1 px (0.3 %).
 Label chips, panel borders and the decorative sparkle / `?` / `zzz` / `!` marks were
 removed from the crops, and the last fifth of every bust is alpha-faded so the flat
 cut across the chest dissolves instead of ending in a line.
@@ -39,9 +40,6 @@ Known limits of the placeholders:
 - The sheet draws each expression bust against the label chip, so the bottom of
   the chest is a flat cut (the body pixels behind the chip do not exist). It is
   softened by the alpha fade, not fixed.
-- `thinking.png` keeps a ~5 px sliver of the shoulder/chin contour because it is
-  connected to the head in the source, so the island filter cannot drop it. It sits
-  below the chin and is barely visible at the size the app draws the character.
 - `front.png` and `hero.png` are trimmed to alpha bounds + 8 px padding.
 - Every state file is upscaled 2× with LANCZOS from the sheet. There is no more
   detail in the sheet than this; do not upscale further.
@@ -63,16 +61,20 @@ policy has blocked this file`). So every PNG here was keyed with the fallback.
    neighbour (not a single constant colour) lets the fill follow the smooth navy
    gradient while stopping dead on the character's harder edge.
 3. Drop small disconnected foreground blobs: for the expressions only blobs
-   ≥ 5 % of the largest one survive (that is what removes the sparkles, `?`,
+   ≥ 12 % of the largest one survive (that is what removes the sparkles, `?`,
    `zzz`, `!`); for the hero and front view only the single largest blob
    survives (that is what removes the "Hi! I'm ANU!" bubble, the title text and
    the cast shadow).
 4. Everything outside the kept blobs gets alpha 0. Interior dark pixels (the
    navy hoodie, the black headphone pads) are never touched — the fill cannot
    reach them.
-5. Erode the alpha by 1 px (`MinFilter(3)`) so the navy antialias fringe dies,
-   then feather with a 0.6 px gaussian. No dark halo remains on the light
-   magenta test composite.
+5. Erode the alpha by 1 px (`MinFilter(3)`) so the navy antialias fringe dies.
+   The erode can snap a hair-thin attachment (a panel border line, a stray fx
+   stroke) off the body, so islands below 12 % of the largest are dropped a second
+   time on the eroded mask before the 0.6 px feather — anything still attached to
+   the character is one island and survives (the raised paw in `thinking.png`, the
+   hoodie and tail in `sleepy.png`). No dark halo remains on the light magenta test
+   composite.
 
 ## Final layered art I must cut by hand
 
