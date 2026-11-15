@@ -38,11 +38,13 @@
 }
 
 /* ---- tail status light ----
-   Placeholder: the art is one flat image, so the status shows as a ring near the
-   tail instead of lighting the tail itself. No blur, no blend modes. */
+   Placeholder: the art is one flat image with no tail, so the ring cannot attach
+   to anything and floats beside the bust. Hidden until the layered rig exists;
+   the state still shows through the expression. No blur, no blend modes. */
 .status-light {
   --light-a: var(--cyan-glow);
   --light-b: var(--blue);
+  display: none;
   position: absolute;
   left: 2%;
   bottom: 6%;

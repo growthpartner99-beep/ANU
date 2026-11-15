@@ -24,22 +24,24 @@ identical SHA-256 hashes).
 | `assets/states/hero.png` | Large hero pose (sitting, tail visible) | Hero character, left of sheet | PLACEHOLDER crop |
 | `assets/icons/tray.png` | 32×32 tray icon | Head crop of the front view | PLACEHOLDER crop |
 
-All six expression files are **414×342** and share one canvas, one character
+All six expression files are **402×342** and share one canvas, one character
 scale and one head anchor (top edge + horizontal centre of the ears/crown). They
 can be cross-faded without the head jumping. The sheet draws each expression bust
-slightly differently sized (head width 266–326 px at source), so the slicer
-measures the mid-head silhouette and rescales each one to the shared median
-before composing; measured spread after the pass is under 1 %. Label chips, panel
-borders and the decorative sparkle / `?` / `zzz` / `!` marks were removed from the
-crops.
+slightly differently sized (face span 320–366 px at source), so the slicer
+measures the widest row through the face band and rescales each bust about the head
+anchor to the shared median. Measured spread after the pass is 1 px (0.3 %).
+Label chips, panel borders and the decorative sparkle / `?` / `zzz` / `!` marks were
+removed from the crops, and the last fifth of every bust is alpha-faded so the flat
+cut across the chest dissolves instead of ending in a line.
 
 Known limits of the placeholders:
 
 - The sheet draws each expression bust against the label chip, so the bottom of
-  the chest is a flat cut (the body pixels behind the chip do not exist).
+  the chest is a flat cut (the body pixels behind the chip do not exist). It is
+  softened by the alpha fade, not fixed.
 - `thinking.png` keeps a ~5 px sliver of the shoulder/chin contour because it is
-  connected to the head in the source, so the blob filter cannot drop it. It sits
-  below the chin and is not visible at the size the app draws the character.
+  connected to the head in the source, so the island filter cannot drop it. It sits
+  below the chin and is barely visible at the size the app draws the character.
 - `front.png` and `hero.png` are trimmed to alpha bounds + 8 px padding.
 - Every state file is upscaled 2× with LANCZOS from the sheet. There is no more
   detail in the sheet than this; do not upscale further.

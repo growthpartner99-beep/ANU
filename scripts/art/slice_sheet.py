@@ -15,7 +15,7 @@ from collections import deque
 from datetime import date
 from pathlib import Path
 
-from PIL import Image, ImageFilter
+from PIL import Image, ImageChops, ImageFilter
 
 ROOT = Path(__file__).resolve().parents[2]
 SHEET = ROOT / "assets" / "ref" / "ANU_sheet.png"
@@ -143,7 +143,9 @@ def cutout(img, box, keep_ratio=0.0, min_island=0.0):
     # erode one pixel so the navy antialias fringe dies, then soften the edge
     alpha = alpha.filter(ImageFilter.MinFilter(3))
     if min_island:
-        prune_islands(alpha, min_island)
+        dropped = prune_islands(alpha, min_island)
+        if dropped:
+            print(f"    dropped detached island(s), areas {[a for a, _ in dropped]}")
     alpha = alpha.filter(ImageFilter.GaussianBlur(FEATHER))
     out = img.crop(box).convert("RGBA")
     out.putalpha(alpha)
@@ -154,25 +156,60 @@ def bbox(rgba):
     return rgba.getchannel("A").getbbox()
 
 
-def head_width(rgba):
-    """Median silhouette width across the mid-head band, in pixels.
+def prune_islands(alpha, ratio):
+    """Zero every alpha island smaller than ratio * the largest one, in place.
 
-    The design sheet draws each expression at a slightly different size (266 to
-    326 px here), so crossfading raw crops pops. The band runs from 25% to 55%
-    of the bbox height, which spans the headphone cups and cheeks and skips both
-    the ear tips and the chin, so the number is stable against head tilt.
+    The 1px erode can snap a hair-thin attachment (a border line, a stray fx
+    stroke) off the body; those leftovers are what leaves a ghost next to the
+    character. Components are read off the mask, so anything still attached to
+    the body - a raised paw, the hoodie, the tail - is one island and survives.
+    """
+    w, h = alpha.size
+    px = alpha.load()
+    bg = [[px[x, y] == 0 for x in range(w)] for y in range(h)]
+    labels, blobs = components(bg, w, h)
+    if len(blobs) < 2:
+        return []
+    limit = blobs[0][1] * ratio
+    kept = {b[0] for b in blobs if b[1] >= limit}
+    for y in range(h):
+        row = labels[y]
+        for x in range(w):
+            if row[x] and row[x] not in kept:
+                px[x, y] = 0
+    return [(a, bb) for nid, a, bb in blobs if nid not in kept]
+
+
+def face_span(rgba, th=127):
+    """Widest alpha run across one row of the face band, in pixels.
+
+    Half-open (last - first column) so the number matches what is measured on
+    the written 2x PNG. The band sits below the ears and above the chin, on the
+    cheeks and headphone cups, so it tracks character scale rather than the
+    silhouette of the expression.
     """
     alpha = rgba.getchannel("A")
-    ox, oy = alpha.getbbox()[:2]
-    b = alpha.getbbox()
-    top, height = oy, b[3] - oy
-    widths = []
-    for y in range(top + int(height * 0.25), top + int(height * 0.55)):
-        xs = [x for x in range(alpha.width) if alpha.getpixel((x, y)) > 16]
+    l, t, r, b = alpha.getbbox()
+    px = alpha.load()
+    best = 0
+    for y in range(t + int((b - t) * FACE_BAND[0]), t + int((b - t) * FACE_BAND[1])):
+        xs = [x for x in range(alpha.width) if px[x, y] > th]
         if xs:
-            widths.append(xs[-1] - xs[0] + 1)
-    widths.sort()
-    return widths[len(widths) // 2] if widths else 0
+            best = max(best, xs[-1] - xs[0])
+    return best
+
+
+def scaled_about(rgba, k, ax, top, m=4):
+    """LANCZOS-resize by k about the head anchor, returning the new anchor.
+
+    A pad of m transparent rows/cols goes on first, so a scale-up cannot lose
+    an edge pixel to the cell box the crop came from. The anchor is mapped
+    through the same resize, so the composite keeps the head where it was.
+    """
+    big = Image.new("RGBA", (rgba.width + 2 * m, rgba.height + 2 * m), (0, 0, 0, 0))
+    big.paste(rgba, (m, m))
+    big = big.resize((round(big.width * k), round(big.height * k)), Image.LANCZOS)
+    return big, (k * (ax + m), k * (top + m))
 
 
 def upscale_save(rgba, path):
@@ -185,6 +222,23 @@ def pad(rgba, p=PAD):
     canvas = Image.new("RGBA", (rgba.width + 2 * p, rgba.height + 2 * p), (0, 0, 0, 0))
     canvas.paste(rgba, (p, p))
     return canvas
+
+
+def fade_bottom(rgba, start=0.80):
+    """Ramp the alpha to 0 over the last fifth of the image.
+
+    The sheet draws each expression bust on top of its label chip, so the crop
+    ends in a hard horizontal cut across the chest. Fading it out turns that cut
+    into a bust that dissolves into the desktop instead of ending in a line.
+    """
+    w, h = rgba.size
+    y0 = int(h * start)
+    ramp = Image.new("L", (1, h), 255)
+    rp = ramp.load()
+    for y in range(y0, h):
+        rp[0, y] = int(255 * (1 - (y - y0) / max(1, h - 1 - y0)) ** 1.6)
+    ramp = ramp.resize((w, h))
+    rgba.putalpha(ImageChops.multiply(rgba.getchannel("A"), ramp))
 
 
 def main():
@@ -223,26 +277,12 @@ def main():
         encoding="utf-8",
     )
 
-    # ---- expressions: one shared canvas, anchored on the head --------------
-    cuts = {}
+    # ---- expressions: one shared canvas, one character scale --------------
+    cuts, scales, spans, heads = {}, {}, {}, {}
     for name, box in CELLS.items():
-        rgba, keep = cutout(img, box, keep_ratio=0.05)
-        cuts[name] = rgba
-        print(f"  {name}: blobs kept {len(keep)}")
-
-    # The sheet draws each expression at a slightly different size; scale them
-    # to one median head width so the crossfade between states does not pop.
-    widths = {n: head_width(c) for n, c in cuts.items()}
-    target = sorted(widths.values())[len(widths) // 2]
-    for name, rgba in list(cuts.items()):
-        f = target / widths[name]
-        if abs(f - 1) > 0.005:
-            size = (round(rgba.width * f), round(rgba.height * f))
-            cuts[name] = rgba.resize(size, Image.LANCZOS)
-            print(f"  {name}: head {widths[name]} -> {target} (x{f:.3f})")
-
-    anchors = {}
-    for name, rgba in cuts.items():
+        rgba, keep = cutout(img, box, keep_ratio=KEEP, min_island=ISLAND)
+        spans[name] = face_span(rgba)
+        scales[name] = round(FACE / spans[name], 4)
         l, t, r, b = bbox(rgba)
         # head anchor: top edge plus the horizontal centre of the top 25 rows
         # (ears + crown). Stable across expressions, unlike the full bbox which
@@ -251,25 +291,50 @@ def main():
         sw, sh = strip.size
         cols = [x for x in range(sw) if any(strip.getpixel((x, y)) > 127 for y in range(sh))]
         ax = l + (sum(cols) / len(cols) if cols else (r - l) / 2)
-        anchors[name] = (ax, t, l, r, b)
-        print(f"  {name}: bbox {(l, t, r, b)}, anchor x {ax:.1f}")
+        cuts[name], heads[name] = scaled_about(rgba, scales[name], ax, t)
+        print(f"  {name}: blobs kept (area) {[a for _, a, _ in keep]}, "
+              f"face {spans[name] * 2} -> {FACE * 2} px 2x, x{scales[name]:.4f}")
+
+    anchors = {}
+    for name, rgba in cuts.items():
+        l, t, r, b = bbox(rgba)
+        anchors[name] = (heads[name][0], t, l, r, b)
 
     L = max(ax - l for ax, t, l, r, b in anchors.values())
     R = max(r - ax for ax, t, l, r, b in anchors.values())
     B = max(b - t for ax, t, l, r, b in anchors.values())
-    pad_px = 6
-    W, H = int(round(L + R)) + 2 * pad_px, int(round(B)) + 2 * pad_px
-    print(f"  shared expression canvas: {W}x{H}")
+    W, H = EXPR_CANVAS
+    pad_x = max(0, (W - int(round(L + R))) // 2)
+    pad_y = max(0, (H - int(round(B))) // 2)
+    print(f"  shared expression canvas: {W}x{H} (2x: {W * 2}x{H * 2}), "
+          f"content {int(round(L + R))}x{int(round(B))}, pad {pad_x}/{pad_y}")
+    if round(L + R) > W or round(B) > H:
+        print("  WARNING: content does not fit the fixed canvas and would clip")
 
     for name, rgba in cuts.items():
         ax, top, l, r, b = anchors[name]
-        off_x = int(round(ax - L)) - pad_px   # relative to the cell box
-        off_y = top - pad_px
+        off_x = int(round(ax - L)) - pad_x   # relative to the cell box
+        off_y = top - pad_y
         canvas = Image.new("RGBA", (W, H), (0, 0, 0, 0))
         # crop outside the cell box is transparent, so this stays aligned even
         # when the shared canvas is wider than a narrow cell
         canvas.alpha_composite(rgba.crop((off_x, off_y, off_x + W, off_y + H)))
+        fade_bottom(canvas)
         upscale_save(canvas, STATES / f"{name}.png")
+
+    # ---- verify: the six must crossfade at one character scale ------------
+    written = {}
+    for name in CELLS:
+        out = Image.open(STATES / f"{name}.png")
+        written[name] = face_span(out)
+        alpha = out.getchannel("A")
+        clear = alpha.histogram()[0] * 100.0 / (alpha.width * alpha.height)
+        print(f"    {name:<10} {round(spans[name] * 2):3d} -> {written[name]:3d} px  "
+              f"x{scales[name]:.4f}  transparent {clear:5.1f}%  {out.size[0]}x{out.size[1]}")
+    lo, hi = min(written.values()), max(written.values())
+    mean = sum(written.values()) / len(written)
+    print(f"    face width spread {hi - lo} px = {(hi - lo) * 100.0 / mean:.1f}% "
+          f"({'OK' if (hi - lo) * 100.0 / mean <= 3 else 'ABOVE 3%'})")
 
     # ---- front view --------------------------------------------------------
     front, _ = cutout(img, FRONT_BOX)
