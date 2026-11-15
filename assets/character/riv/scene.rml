@@ -29,32 +29,39 @@
              CHARACTER ARTWORK (back to front; first declared = front-most)
              ============================================================================ -->
 
-        <!-- Tail -->
-        <Node x="240" y="200" name="Tail Group" id="0:100">
-            <Shape x="40" y="30" name="Tail Base" id="0:101">
-                <Ellipse width="70" height="110" originX="0.5" originY="0.5" name="Path"/>
-                <Fill name="Tail Fill" id="0:102">
-                    <LinearGradient startX="-35" startY="0" endX="35" endY="0" name="Gradient" id="0:103">
-                        <GradientStop colorValue="FF4A5568" position="0"/>
-                        <GradientStop colorValue="FF2D3748" position="0.6"/>
-                        <GradientStop colorValue="FF1A202C" position="1"/>
-                    </LinearGradient>
-                </Fill>
-                <Stroke thickness="3" name="Tail Stroke" id="0:104">
-                    <SolidColor colorValue="FF00D4FF" name="Color"/>
-                    <Feather strength="4" name="Feather"/>
-                </Stroke>
-            </Shape>
-            <Shape x="30" y="50" name="Tail Tip" id="0:105">
-                <Ellipse width="50" height="80" originX="0.5" originY="0.5" name="Path"/>
-                <Fill name="Tip Fill" id="0:106">
-                    <SolidColor colorValue="FF00D4FF" name="Color"/>
-                </Fill>
-                <Stroke thickness="2" name="Tip Stroke" id="0:107">
-                    <SolidColor colorValue="FF0099CC" name="Color"/>
-                </Stroke>
-            </Shape>
-        </Node>
+        <!-- Rig: root -> spine, identity rest so nothing moves -->
+        <RootBone x="150" y="240" length="0" name="root" id="0:5000">
+            <Bone length="90" rotation="0" name="spine" id="0:5001">
+                <!-- Tail: rigid child of spine, no tail bones, no skin -->
+                <Node x="0" y="-40" name="Tail Group" id="0:100">
+                    <Shape x="40" y="30" name="Tail Base" id="0:101">
+                        <Ellipse width="70" height="110" originX="0.5" originY="0.5" name="Path"/>
+                        <Fill name="Tail Fill" id="0:102">
+                            <LinearGradient startX="-35" startY="0" endX="35" endY="0" name="Gradient" id="0:103">
+                                <GradientStop colorValue="FF4A5568" position="0"/>
+                                <GradientStop colorValue="FF2D3748" position="0.6"/>
+                                <GradientStop colorValue="FF1A202C" position="1"/>
+                            </LinearGradient>
+                        </Fill>
+                        <Stroke thickness="3" name="Tail Stroke" id="0:104">
+                            <SolidColor colorValue="FF00D4FF" name="Color"/>
+                            <Feather strength="4" name="Feather"/>
+                        </Stroke>
+                    </Shape>
+                    <Shape x="30" y="50" name="Tail Tip" id="0:105">
+                        <Ellipse width="50" height="80" originX="0.5" originY="0.5" name="Path"/>
+                        <Fill name="Tip Fill" id="0:106">
+                            <SolidColor colorValue="FF00D4FF" name="Color"/>
+                        </Fill>
+                        <Stroke thickness="2" name="Tip Stroke" id="0:107">
+                            <SolidColor colorValue="FF0099CC" name="Color"/>
+                        </Stroke>
+                    </Shape>
+                </Node>
+                <!-- Neck: child of spine. Head stays a rigid node for now (no head bone) -->
+                <Bone length="40" rotation="0" name="neck" id="0:5002"/>
+            </Bone>
+        </RootBone>
 
         <!-- Body / Hoodie -->
         <Node x="150" y="240" name="Body Group" id="0:200">

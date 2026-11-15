@@ -79,8 +79,10 @@ const FALLBACK_IMAGE = '../../Design/ANU_ Your Smart Desktop Companion.png';
     console.error('[ANU] Failed to load reference fallback image:', err);
   };
 
+  let gazeStarted = false;
   anu.onReady(() => {
-    if (window.anuMouse) {
+    if (window.anuMouse && !gazeStarted) {
+      gazeStarted = true;
       let rafId = null;
       let lastPoint = null;
 
