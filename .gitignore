@@ -26,5 +26,8 @@ desktop.ini
 
 # playwright mcp scratch
 .playwright-mcp/
+# python bytecode from the art scripts
+__pycache__/
+*.pyc
 # generated media
 docs/shots/*.tmp.png
