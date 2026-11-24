@@ -42,4 +42,4 @@ Import the repo into Vercel with **Root Directory: `apps/web`** and the **Next.j
 
 Protected previews need the `x-vercel-protection-bypass` header with `VERCEL_AUTOMATION_BYPASS_SECRET` (Vercel → Deployment Protection → Protection Bypass for Automation).
 
-P0S-T02: this PR exists to verify the per-PR Vercel preview pipeline.
+P0S-T02 Vercel preview: https://anu-git-p0s-t02-vercel-preview-growthpartner99-2368.vercel.app/
