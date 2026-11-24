@@ -71,7 +71,8 @@
           "us-assets.i.posthog.com",
           "docs.arcjet.com",
           "decide.arcjet.com",
-          "nextjs.org"
+          "nextjs.org",
+          "telemetry.vercel.com:443"
         ],
         "deny": []
       },

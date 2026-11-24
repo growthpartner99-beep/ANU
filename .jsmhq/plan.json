@@ -5,7 +5,42 @@
       "title": "Backlog",
       "status": "active",
       "order": 0
+    },
+    {
+      "id": "P0S",
+      "title": "Phase 0 — Setup",
+      "status": "active",
+      "order": 1
     }
   ],
-  "tasks": []
+  "tasks": [
+    {
+      "id": "P0S-T01",
+      "boardId": "P0S",
+      "title": "Empty app that builds and deploys",
+      "ownerId": "dwight",
+      "status": "in-progress",
+      "needs": [],
+      "prNumber": null,
+      "description": "Phase 0 setup — the only single-lane phase, so all setup goes in this one task/branch/PR. Read Docs/plan.md (Phase 0) and Docs/project.md §10 (repo layout), §3 (stack), §4 (environments), §11 (environment variables) before starting.\n\nBuild a greenfield scaffold in the current repo (it contains only docs/config):\n1. pnpm monorepo with apps/web, apps/widget, packages/shared, packages/db and supabase/migrations.\n2. apps/web: Next.js App Router + TypeScript strict + Tailwind, with a minimal home page at `/` only. Real landing, dashboard, /embed and /api land in later phases. Wire root scripts: pnpm dev, typecheck, lint, test, build, db:types (Vitest configured, no feature tests yet).\n3. apps/widget: vanilla TypeScript loader stub that bundles to dist/widget.js; keep the <5 kb target in mind for the real loader in Phase 2.\n4. packages/shared: contract skeleton including the APP_NAME constant (never hardcode the app name). packages/db: placeholder for generated types and the pglite test helper location — no tables or migrations yet.\n5. .env.example lists every §11 variable with no values; .env stays gitignored. No secrets in code or commits.\n6. Vercel: the repo must produce a preview per PR and production from main with automatic promotion OFF. The product owner connects Vercel as a separate action item in HQ: import the repo, turn automatic promotion off, allow *.vercel.app in each developer's sandbox, and add VERCEL_AUTOMATION_BYPASS_SECRET to each developer's env file. If it is not ready when you finish the code, open the PR anyway, say so in the PR body, and add the preview check when it is.\n7. When checking a preview, get the URL from the Vercel comment on the PR (gh pr view <n> --comments) or the deployment status, never from the branch name. Send x-vercel-protection-bypass: $VERCEL_AUTOMATION_BYPASS_SECRET on every request and x-vercel-set-bypass-cookie: true on the first browser request. If *.vercel.app is blocked in your sandbox, call request_access for the wildcard domain, not the single URL.",
+      "files": [
+        "apps/web/**",
+        "apps/widget/**",
+        "packages/shared/**",
+        "packages/db/**",
+        "supabase/migrations/.gitkeep",
+        "package.json",
+        "pnpm-lock.yaml",
+        "pnpm-workspace.yaml",
+        "tsconfig*.json",
+        "turbo.json",
+        "vercel.json",
+        ".gitignore",
+        ".env.example",
+        "README.md"
+      ],
+      "doneWhen": "- pnpm typecheck, pnpm lint, pnpm test and pnpm build all pass.\n- Repo contains apps/web, apps/widget, packages/shared, packages/db and supabase/migrations, with root scripts from AGENTS.md.\n- .env.example lists every §11 variable with no values; .env is gitignored and no secret is committed.\n- A PR is open with a Vercel preview URL from the PR comment/deployment status.\n- With the protection-bypass header, the home page at `/` returns 200 and renders on that preview.\n- Vercel automatic production promotion is off (product owner confirms).",
+      "note": null
+    }
+  ]
 }

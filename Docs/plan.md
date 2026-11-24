@@ -22,15 +22,14 @@ The build order for Askwell. `docs/project.md` describes each feature in detail.
 
 **Keys needed:** none at the start. The product owner connects Vercel during this phase, before its last task: imports the repo (automatic promotion off), allows `*.vercel.app` in each developer's sandbox, and adds `VERCEL_AUTOMATION_BYPASS_SECRET` to each developer's env file (Vercel → Deployment Protection → Protection Bypass for Automation). The lead plans the Vercel check as the last task.
 
-| Includes                                                                  | project.md |
-| ------------------------------------------------------------------------- | ---------- |
-| Monorepo with `apps/web`, `apps/widget`, `packages/shared`, `packages/db` | §10        |
-| Next.js app with TypeScript and Tailwind                                  | §3         |
-| Vercel project: a preview per PR, production from `main` (automatic promotion off) | §3, §4 |
-| `.env.example` with every variable                                        | §11        |
+| Includes                                                                           | project.md |
+| ---------------------------------------------------------------------------------- | ---------- |
+| Monorepo with `apps/web`, `apps/widget`, `packages/shared`, `packages/db`          | §10        |
+| Next.js app with TypeScript and Tailwind                                           | §3         |
+| Vercel project: a preview per PR, production from `main` (automatic promotion off) | §3, §4     |
+| `.env.example` with every variable                                                 | §11        |
 
 **Done when:** a PR gets a Vercel preview URL, and the home page loads on it.
-
 
 ---
 
@@ -40,13 +39,12 @@ The build order for Askwell. `docs/project.md` describes each feature in detail.
 
 **Keys needed:** the Supabase dev project (`NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_PUBLISHABLE_KEY`, `SUPABASE_SECRET_KEY`), the Supabase MCP connected to each developer and scoped to the dev project, `NEXT_PUBLIC_CLERK_PUBLISHABLE_KEY`, `CLERK_SECRET_KEY`, and Clerk set up as a third-party auth provider in Supabase
 
-| Lane                        | Includes                                                                                                                                                | project.md |
-| --------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
-| **A — Contract + database** | Supabase migrations for all tables, pgvector, RLS policies and grants, the owner and service clients, generated types. Shared types for every API route. Plan limits.           | §5, §7, §8 |
-| **B — Auth + shells**       | Clerk sign in / sign up, middleware, `accounts` row on first sign-in, empty dashboard layout with navigation, landing page (static, no live widget yet) | §6.1, §6.2, §13 |
+| Lane                        | Includes                                                                                                                                                              | project.md      |
+| --------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------- |
+| **A — Contract + database** | Supabase migrations for all tables, pgvector, RLS policies and grants, the owner and service clients, generated types. Shared types for every API route. Plan limits. | §5, §7, §8      |
+| **B — Auth + shells**       | Clerk sign in / sign up, middleware, `accounts` row on first sign-in, empty dashboard layout with navigation, landing page (static, no live widget yet)               | §6.1, §6.2, §13 |
 
 **Done when:** migrations run on dev; a new user signs up and lands on an empty dashboard; the landing page is live.
-
 
 ---
 
@@ -63,7 +61,6 @@ The build order for Askwell. `docs/project.md` describes each feature in detail.
 
 **Done when:** create a project → copy the snippet → a plain HTML page on another origin shows the button → the panel opens and shows a mock reply.
 
-
 ---
 
 ## Phase 3 — Knowledge + chat
@@ -72,15 +69,14 @@ The build order for Askwell. `docs/project.md` describes each feature in detail.
 
 **Keys needed:** `OPENAI_API_KEY`, `ARCJET_KEY` (the `knowledge` Storage bucket is created by a migration)
 
-| Lane              | Includes                                                                                                                              | project.md |
-| ----------------- | ------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
+| Lane              | Includes                                                                                                                                                                   | project.md |
+| ----------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | ---------- |
 | **A — Knowledge** | Paste text + upload PDF/MD/TXT straight to Supabase Storage with signed URLs, text extraction, chunking, embeddings, Knowledge page with source status, delete, file limit | §6.4       |
-| **B — Chat**      | Arcjet rate limit + prompt injection detection, `POST /api/widget/chat`: quota, retrieval, answer, save, count. Connect the `/embed` panel to it.                         | §6.6       |
+| **B — Chat**      | Arcjet rate limit + prompt injection detection, `POST /api/widget/chat`: quota, retrieval, answer, save, count. Connect the `/embed` panel to it.                          | §6.6       |
 
 Lane B tests retrieval with seeded chunks until Lane A is merged.
 
 **Done when:** upload a PDF → ask about it on the plain HTML page → correct answer; an unrelated question → "I don't know"; the 21st message in a minute is refused.
-
 
 ---
 
@@ -97,7 +93,6 @@ Lane B tests retrieval with seeded chunks until Lane A is merged.
 
 **Done when:** a widget chat appears in Conversations after refresh; the usage count goes up; PostHog shows the events and an AI trace with its cost.
 
-
 ---
 
 ## Phase 5 — Billing + customize
@@ -108,13 +103,12 @@ Lane B tests retrieval with seeded chunks until Lane A is merged.
 
 | Lane              | Includes                                                                                                                       | project.md |
 | ----------------- | ------------------------------------------------------------------------------------------------------------------------------ | ---------- |
-| **A — Billing**   | Clerk webhook → `accounts.plan`, billing page with Clerk's pricing table and account portal | §6.10      |
+| **A — Billing**   | Clerk webhook → `accounts.plan`, billing page with Clerk's pricing table and account portal                                    | §6.10      |
 | **B — Customize** | Customize page with live preview, `PATCH /api/projects/:id/config` with 402 for Free, plan-applied config in the widget, badge | §6.8       |
 
 Lane B builds the 402 path first, then tests Pro by setting `accounts.plan` by hand until Lane A is merged.
 
 **Done when:** Free save → 402 → upgrade with a test card → save works → the widget shows the new color on reload.
-
 
 ---
 
@@ -130,4 +124,3 @@ Lane B builds the 402 path first, then tests Pro by setting `accounts.plan` by h
 | **B — Launch**   | Landing page runs the app's own widget, responsive and empty-state polish, run the full core flow on `main` | §2, §6.1   |
 
 **Done when:** the product owner creates the Supabase prod project, applies every migration to it, sets Vercel's production variables and promotes the build; then all nine steps of the core flow (§2) pass on the production URL.
-
