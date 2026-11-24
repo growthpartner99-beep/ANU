@@ -1,0 +1,30 @@
+# Dependencies
+node_modules/
+.pnpm-store/
+
+# Build output
+.next/
+out/
+dist/
+build/
+*.tsbuildinfo
+
+# Test output
+coverage/
+
+# Vercel
+.vercel/
+
+# Logs
+*.log
+pnpm-debug.log*
+turbo-debug.log*
+
+# Environment — never commit real values
+.env
+.env.*
+!.env.example
+
+# Editor / OS
+.DS_Store
+*.swp
