@@ -41,3 +41,5 @@ pnpm dev                     # http://localhost:3000
 Import the repo into Vercel with **Root Directory: `apps/web`** and the **Next.js** framework preset. Vercel detects the pnpm workspace from the lockfile; the install command is `pnpm install --frozen-lockfile`. Automatic production promotion stays **off**, every pull request gets a preview, and production builds come from `main`.
 
 Protected previews need the `x-vercel-protection-bypass` header with `VERCEL_AUTOMATION_BYPASS_SECRET` (Vercel → Deployment Protection → Protection Bypass for Automation).
+
+P0S-T02: this PR exists to verify the per-PR Vercel preview pipeline.
