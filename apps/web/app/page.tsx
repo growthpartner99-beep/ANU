@@ -1,12 +1,23 @@
-import { APP_NAME } from "@askwell/shared";
+import { Demo } from "@/components/landing/demo";
+import { Hero } from "@/components/landing/hero";
+import { HowItWorks } from "@/components/landing/how-it-works";
+import { InstallSnippet } from "@/components/landing/install-snippet";
+import { Pricing } from "@/components/landing/pricing";
+import { SiteFooter } from "@/components/landing/site-footer";
+import { SiteHeader } from "@/components/landing/site-header";
 
 export default function Home() {
   return (
-    <main className="flex min-h-screen items-center justify-center px-6">
-      <section className="fade-in rounded-3xl border border-white/15 bg-white/5 p-10 text-center shadow-2xl backdrop-blur-xl">
-        <h1 className="text-4xl font-semibold tracking-tight">{APP_NAME}</h1>
-        <p className="mt-3 text-sm text-white/60">The app is being built. Check back soon.</p>
-      </section>
-    </main>
+    <div data-surface="dark" className="min-h-screen bg-[var(--surface)] text-[var(--ink)]">
+      <SiteHeader />
+      <main id="main">
+        <Hero />
+        <HowItWorks />
+        <Demo />
+        <Pricing />
+        <InstallSnippet />
+      </main>
+      <SiteFooter />
+    </div>
   );
 }
