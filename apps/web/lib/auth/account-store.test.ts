@@ -9,6 +9,7 @@ describe("createInMemoryAccountStore", () => {
     const second = await store.ensureFreeAccount("user_123");
 
     expect(first.plan).toBe("free");
+    expect(first.clerk_user_id).toBe("user_123");
     expect(second).toEqual(first);
   });
 
@@ -18,8 +19,8 @@ describe("createInMemoryAccountStore", () => {
     const alice = await store.ensureFreeAccount("user_alice");
     const bob = await store.ensureFreeAccount("user_bob");
 
-    expect(alice.clerkUserId).toBe("user_alice");
-    expect(bob.clerkUserId).toBe("user_bob");
+    expect(alice.clerk_user_id).toBe("user_alice");
+    expect(bob.clerk_user_id).toBe("user_bob");
     expect(alice).not.toEqual(bob);
   });
 });
